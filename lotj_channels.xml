@@ -1167,10 +1167,10 @@ function right_click_menu (hotspot_id)
       
    
   menustring = menustring .. "|>Capture Other Info|"..
-  		((show_deathlog==1 and "+") or "")..
+  		((variables["show_deathlog"]==1 and "+") or "")..
   		"Death Logs|"..
-  		((show_buzz==1 and "+") or "")..
-  		"Microphone Buzz|"..
+  		((variables["show_buzz"]==1 and "+") or "")..
+  		"Pokes|"..
   	  "<"
   	--REMOVE FROM HERE?
   menustring = menustring .. "|>Echo Channels in Main Window|"..
