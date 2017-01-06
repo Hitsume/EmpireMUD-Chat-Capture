@@ -6,7 +6,7 @@
 
 <muclient>
 <plugin
-   name="EmpireMUD_Chat_Capture"
+   name="Chat_Capture"
    author="Hitsume"
    id="56423564b3eda7e8b471477f"
    language="Lua"
@@ -42,7 +42,7 @@ USAGE:
   <trigger enabled="n" name="shout" match="* shout*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="empire" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-<!--  <trigger enabled="n" name="comms" match="CommNet*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
+  <trigger enabled="n" name="slashchannels" match="[/* *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
 <!--  <trigger enabled="n" name="broadcast" match="Broadcasting Network*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
   
   --- begin OOC chat grabs
@@ -53,8 +53,7 @@ USAGE:
   <trigger enabled="n" name="newbie" match="*/newbie *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="immooc" match="[IMMORTAL*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="deathlog" match="[ DEATH:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-<!--  REMOVE FROM HERE -->
-  <trigger enabled="n" name="godnet" match="GOD*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />  -->
+  <trigger enabled="n" name="godnet" match="[GOD*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />  -->
   
   -- blank line gag
   <trigger enabled="n" match="^$" regexp="y" name="end_gag" group="end_gag" omit_from_output="y" sequence="100" send_to="12" >
@@ -132,15 +131,15 @@ starty = ""
 function setup()
 
 -- Automating a lot of tedium
-variable_names = {"show_say", "show_empire", "show_comms", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
-"say_echo", "empire_echo", "comms_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
+variable_names = {"show_say", "show_empire", "show_slashchannels", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
+"say_echo", "empire_echo", "slashchannels_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
 variables = {}
 for _,v in pairs(variable_names) do
 	variables[v] = tonumber(GetVariable(v)) or 1
 end
 --[[show_say = tonumber(GetVariable("show_say")) or 1
 show_empire = tonumber(GetVariable("show_empire")) or 1
-show_comms = tonumber(GetVariable("show_comms")) or 1
+show_slashchannels = tonumber(GetVariable("show_slashchannels")) or 1
 show_broadcast = tonumber(GetVariable("show_broadcast")) or 1
 show_buzz = tonumber(GetVariable("show_buzz")) or 1
 show_ooc = tonumber(GetVariable("show_ooc")) or 1
@@ -152,7 +151,7 @@ show_godnet = tonumber(GetVariable("show_godnet")) or 1
 
 say_echo = tonumber(GetVariable("say_echo")) or 1
 empire_echo = tonumber(GetVariable("empire_echo")) or 1
-comms_echo = tonumber(GetVariable("comms_echo")) or 1
+slashchannels_echo = tonumber(GetVariable("slashchannels_echo")) or 1
 ooc_echo = tonumber(GetVariable("ooc_echo")) or 1
 wiznet_echo = tonumber(GetVariable("wiznet_echo")) or 1
 newbie_echo = tonumber(GetVariable("newbie_echo")) or 1
@@ -170,7 +169,7 @@ SetTriggerOption("ask1", "enabled", variables["show_say"])
 SetTriggerOption("shout", "enabled", variables["show_say"])
 SetTriggerOption("exclaim1", "enabled", variables["show_say"])
 SetTriggerOption("empire", "enabled", variables["show_empire"])
-SetTriggerOption("comms", "enabled", variables["show_comms"])
+SetTriggerOption("slashchannels", "enabled", variables["show_slashchannels"])
 SetTriggerOption("broadcast", "enabled", variables["show_broadcast"])
 SetTriggerOption("buzz", "enabled", variables["show_buzz"])
 SetTriggerOption("groupchat", "enabled", variables["show_groupchat"])
@@ -188,7 +187,7 @@ SetTriggerOption("ask1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("shout", "omit_from_output", variables["say_echo"])
 SetTriggerOption("exclaim1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("empire", "omit_from_output", variables["empire_echo"])
-SetTriggerOption("comms", "omit_from_output", variables["comms_echo"])
+SetTriggerOption("slashchannels", "omit_from_output", variables["slashchannels_echo"])
 SetTriggerOption("ooc", "omit_from_output", variables["ooc_echo"])
 SetTriggerOption("immooc", "omit_from_output", variables["ooc_echo"])
 SetTriggerOption("deathlog", "omit_from_output", variables["ooc_echo"])
@@ -409,13 +408,14 @@ function OnPluginSaveState()
   SetVariable("WINDOW_HEIGHT", height)
   SetVariable("WINDOW_NAME", WINDOW_NAME)
   for _,v in pairs(variable_names) do
+    Tell(v.." ")
     SetVariable(v, variables[v])
   end
 --[[SetVariable("show_say", show_say)
 	SetVariable("show_empire", show_empire)
 	SetVariable("show_broadcast", show_broadcast)
 	SetVariable("show_buzz", show_buzz)
-	SetVariable("show_comms", show_comms)
+	SetVariable("show_slashchannels", show_slashchannels)
 	SetVariable("show_ooc", show_ooc)
 	SetVariable("show_wiznet", show_wiznet)
 	SetVariable("show_newbie", show_newbie)
@@ -424,7 +424,7 @@ function OnPluginSaveState()
 	SetVariable("show_godnet", show_godnet)
 	SetVariable("say_echo", say_echo)
 	SetVariable("empire_echo", empire_echo)
-	SetVariable("comms_echo", comms_echo)
+	SetVariable("slashchannels_echo", slashchannels_echo)
 	SetVariable("ooc_echo", ooc_echo)
 	SetVariable("wiznet_echo", wiznet_echo)
 	SetVariable("newbie_echo", newbie_echo)
@@ -837,7 +837,7 @@ function untagged_info (name, line, wildcards, styles)
   if variables["empire_echo"] == 1 and name=="empire" then
   EnableTrigger("end_gag", true)
   end
-  if variables["comms_echo"] == 1 and name=="comms" then
+  if variables["slashchannels_echo"] == 1 and name=="slashchannels" then
   EnableTrigger("end_gag", true)
   end
   if variables["groupchat_echo"] == 1 and name=="groupchat" then
@@ -1153,18 +1153,18 @@ function right_click_menu (hotspot_id)
       "Say|"..
       ((variables["show_empire"]==1 and "+") or "")..
       "Empire Chat|"..
-      ((variables["show_comms"]==1 and "+") or "")..
-      "Comms|"..
+      ((variables["show_slashchannels"]==1 and "+") or "")..
+      "Slash Channels|"..
       ((variables["show_groupchat"]==1 and "+") or "")..
       "Group Chat|"..
       ((variables["show_tellchat"]==1 and "+") or "")..
       "Tells|"..
       ((variables["show_ooc"]==1 and "+") or "")..
-      "OOC|"..
+      "/ooc|"..
       ((variables["show_wiznet"]==1 and "+") or "")..
       "Wiznet|"..
       ((variables["show_newbie"]==1 and "+") or "")..
-      "Newbie|"..
+      "/newbie|"..
       ((variables["show_godnet"]==1 and "+") or "")..
       "Godnet|"..
       "<"
@@ -1180,12 +1180,12 @@ function right_click_menu (hotspot_id)
   menustring = menustring .. "|>Echo Channels in Main Window|"..
                               ((variables["say_echo"]==0 and "+") or "").. "Say|"..
                               ((variables["empire_echo"]==0 and "+") or "").. "Empire Chat|"..
-                              ((variables["comms_echo"]==0 and "+") or "").. "Comms|"..
+                              ((variables["slashchannels_echo"]==0 and "+") or "").. "Slash Channels|"..
                               ((variables["groupchat_echo"]==0 and "+") or "").. "Group Chat|"..
                               ((variables["tellchat_echo"]==0 and "+") or "").. "Tells|"..
-                              ((variables["ooc_echo"]==0 and "+") or "").. "OOC|"..
+                              ((variables["ooc_echo"]==0 and "+") or "").. "/ooc|"..
 							  ((variables["wiznet_echo"]==0 and "+") or "").. "Wiznet|"..
-                              ((variables["newbie_echo"]==0 and "+") or "").. "Newbie|"..
+                              ((variables["newbie_echo"]==0 and "+") or "").. "/newbie|"..
                               ((variables["godnet_echo"]==0 and "+") or "").. "Godnet|"..
                               "<|-"
                               
@@ -1298,9 +1298,9 @@ function right_click_menu (hotspot_id)
          --end
 
 	        if variables["show_say"] == 0 then
-	          ColourNote("yellow","","Say capturing is now ENABLED.")
+	          ColourNote("yellow","","Say/ask/shout capturing is now ENABLED.")
 	        else
-	          ColourNote("yellow","","Say capturing is now DISABLED.")
+	          ColourNote("yellow","","Say/ask/shout capturing is now DISABLED.")
 	        end
 	        EnableTrigger("say1", 0 == variables["show_say"])
 	        EnableTrigger("say2", 0 == variables["show_say"])
@@ -1312,22 +1312,22 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_empire"] == 0 then
-      		ColourNote ("yellow", "", "Clan capturing is now ENABLED.")
+      		ColourNote ("yellow", "", "Empire capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "Clan capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "Empire capturing is now DISABLED.")
       	end
       	EnableTrigger("empire", 0 == variables["show_empire"])
       	variables["show_empire"] = GetTriggerOption("empire","enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-      	if variables["show_comms"] == 0 then
-      		ColourNote ("yellow", "", "Comms capturing is now ENABLED.")
+      	if variables["show_slashchannels"] == 0 then
+      		ColourNote ("yellow", "", "Slash channel capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "Comms capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "Slash channel capturing is now DISABLED.")
       	end
-      	EnableTrigger("comms", 0 == variables["show_comms"])
-      	variables["show_comms"] = GetTriggerOption("comms","enabled")
+      	EnableTrigger("slashchannels", 0 == variables["show_slashchannels"])
+      	variables["show_slashchannels"] = GetTriggerOption("slashchannels","enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1352,11 +1352,10 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_ooc"] == 0 then
-      		ColourNote ("yellow", "", "OOC capturing is now ENABLED.")
+      		ColourNote ("yellow", "", "/OOC capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "OOC capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "/OOC capturing is now DISABLED.")
       	end
-      	--EnableTrigger("immooc", 0 == show_ooc)
       	EnableTrigger("deathlog", 0 == variables["show_ooc"])
       	EnableTrigger("ooc", 0 == variables["show_ooc"])
       	variables["show_ooc"] = GetTriggerOption("ooc","enabled")
@@ -1374,9 +1373,9 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_newbie"] == 0 then
-      		ColourNote ("yellow", "", "Newbie capturing is now ENABLED.")
+      		ColourNote ("yellow", "", "/newbie capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "Newbie capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "/newbie capturing is now DISABLED.")
       	end
       	EnableTrigger("newbie", 0 == variables["show_newbie"])
       	variables["show_newbie"] = GetTriggerOption("newbie","enabled")
@@ -1395,9 +1394,9 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_broadcast"] == 0 then
-         	ColourNote ("yellow", "", "Broadcast capturing is now ENABLED.")
+         	ColourNote ("yellow", "", "BROADCAST_DUMMY capturing is now ENABLED.")
         else
-         	ColourNote ("yellow", "", "Broadcast capturing is now DISABLED.")
+         	ColourNote ("yellow", "", "BROADCAST_DUMMY capturing is now DISABLED.")
         end
         EnableTrigger("broadcast", 0 == variables["show_broadcast"])
         variables["show_broadcast"] = GetTriggerOption("broadcast","enabled")
@@ -1405,9 +1404,9 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_buzz"] == 0 then
-      		ColourNote ("yellow", "", "Microphone Buzz capturing is now ENABLED.")
+      		ColourNote ("yellow", "", "Microphone Buzz_DUMMY capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "Microphone Buzz capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "Microphone Buzz_DUMMY capturing is now DISABLED.")
       	end
       	EnableTrigger("buzz", 0 == variables["show_buzz"])
       	variables["show_buzz"] = GetTriggerOption("buzz","enabled") 
@@ -1415,9 +1414,9 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
         if variables["say_echo"] == 0 then
-          ColourNote("yellow", "", "Say will NOT be shown in the main window.")
+          ColourNote("yellow", "", "Say/ask/shout will NOT be shown in the main window.")
         else
-          ColourNote("yellow", "", "Say will be shown in the main window.")
+          ColourNote("yellow", "", "Say/ask/shout will be shown in the main window.")
         end
         SetTriggerOption("say1", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("say2", "omit_from_output", 0 == variables["say_echo"])
@@ -1429,22 +1428,22 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
         if variables["empire_echo"] == 0 then
-          ColourNote("yellow", "", "Clan will NOT be shown in the main window.")
+          ColourNote("yellow", "", "Empire chat will NOT be shown in the main window.")
         else
-          ColourNote("yellow", "", "Clan will be shown in the main window.")
+          ColourNote("yellow", "", "Empire chat will be shown in the main window.")
         end
         SetTriggerOption("empire", "omit_from_output", 0 == variables["empire_echo"])
         variables["empire_echo"] = GetTriggerOption("empire", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-        if variables["comms_echo"] == 0 then
-          ColourNote("yellow", "", "Comms will NOT be shown in the main window.")
+        if variables["slashchannels_echo"] == 0 then
+          ColourNote("yellow", "", "Other slash channels will NOT be shown in the main window.")
         else
-          ColourNote("yellow", "", "Comms will be shown in the main window.")
+          ColourNote("yellow", "", "Other slash channels will be shown in the main window.")
         end
-        SetTriggerOption("comms", "omit_from_output", 0 == variables["comms_echo"])
-        variables["comms_echo"] = GetTriggerOption("comms", "omit_from_output")
+        SetTriggerOption("slashchannels", "omit_from_output", 0 == variables["slashchannels_echo"])
+        variables["slashchannels_echo"] = GetTriggerOption("slashchannels", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
