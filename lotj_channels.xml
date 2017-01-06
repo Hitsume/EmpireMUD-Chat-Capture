@@ -1149,20 +1149,20 @@ function right_click_menu (hotspot_id)
       "Say|"..
       ((variables["show_empire"]==1 and "+") or "")..
       "Empire Chat|"..
-      ((variables["show_slashchannels"]==1 and "+") or "")..
-      "Slash Channels|"..
       ((variables["show_groupchat"]==1 and "+") or "")..
       "Group Chat|"..
       ((variables["show_tellchat"]==1 and "+") or "")..
       "Tells|"..
       ((variables["show_ooc"]==1 and "+") or "")..
       "/ooc|"..
-      ((variables["show_wiznet"]==1 and "+") or "")..
-      "Wiznet|"..
       ((variables["show_newbie"]==1 and "+") or "")..
       "/newbie|"..
-      ((variables["show_godnet"]==1 and "+") or "")..
+      ((variables["show_wiznet"]==1 and "+") or "")..
+      "Wiznet|"..
+	  ((variables["show_godnet"]==1 and "+") or "")..
       "Godnet|"..
+      ((variables["show_slashchannels"]==1 and "+") or "")..
+      "Slash Channels|"..
       "<"
       
    
@@ -1176,13 +1176,13 @@ function right_click_menu (hotspot_id)
   menustring = menustring .. "|>Echo Channels in Main Window|"..
                               ((variables["say_echo"]==0 and "+") or "").. "Say|"..
                               ((variables["empire_echo"]==0 and "+") or "").. "Empire Chat|"..
-                              ((variables["slashchannels_echo"]==0 and "+") or "").. "Slash Channels|"..
                               ((variables["groupchat_echo"]==0 and "+") or "").. "Group Chat|"..
                               ((variables["tellchat_echo"]==0 and "+") or "").. "Tells|"..
                               ((variables["ooc_echo"]==0 and "+") or "").. "/ooc|"..
-							  ((variables["wiznet_echo"]==0 and "+") or "").. "Wiznet|"..
                               ((variables["newbie_echo"]==0 and "+") or "").. "/newbie|"..
+							  ((variables["wiznet_echo"]==0 and "+") or "").. "Wiznet|"..
                               ((variables["godnet_echo"]==0 and "+") or "").. "Godnet|"..
+                              ((variables["slashchannels_echo"]==0 and "+") or "").. "Slash Channels|"..
                               "<|-"
                               
   
@@ -1317,16 +1317,6 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-      	if variables["show_slashchannels"] == 0 then
-      		ColourNote ("yellow", "", "Slash channel capturing is now ENABLED.")
-      	else
-      		ColourNote ("yellow", "", "Slash channel capturing is now DISABLED.")
-      	end
-      	EnableTrigger("slashchannels", 0 == variables["show_slashchannels"])
-      	variables["show_slashchannels"] = GetTriggerOption("slashchannels","enabled")
-	  end
-	  check_counter = check_counter + 1
-      if numResult == check_counter+hyperlink_skip then
       	if variables["show_groupchat"] == 0 then
       		ColourNote ("yellow", "", "Group Chat capturing is now ENABLED.")
       	else
@@ -1357,16 +1347,6 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-      	if variables["show_wiznet"] == 0 then
-      		ColourNote ("yellow", "", "Wiznet capturing is now ENABLED.")
-      	else
-      		ColourNote ("yellow", "", "Wiznet capturing is now DISABLED.")
-      	end
-      	EnableTrigger("immooc", 0 == variables["show_wiznet"])
-      	variables["show_wiznet"] = GetTriggerOption("immooc","enabled")
-	  end
-	  check_counter = check_counter + 1
-      if numResult == check_counter+hyperlink_skip then
       	if variables["show_newbie"] == 0 then
       		ColourNote ("yellow", "", "/newbie capturing is now ENABLED.")
       	else
@@ -1378,6 +1358,16 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
+      	if variables["show_wiznet"] == 0 then
+      		ColourNote ("yellow", "", "Wiznet capturing is now ENABLED.")
+      	else
+      		ColourNote ("yellow", "", "Wiznet capturing is now DISABLED.")
+      	end
+      	EnableTrigger("immooc", 0 == variables["show_wiznet"])
+      	variables["show_wiznet"] = GetTriggerOption("immooc","enabled")
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_godnet"] == 0 then
       		ColourNote ("yellow", "", "GodNet capturing is now ENABLED.")
       	else
@@ -1385,6 +1375,16 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("godnet", 0 == variables["show_godnet"])
       	variables["show_godnet"] = GetTriggerOption("godnet","enabled")
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
+      	if variables["show_slashchannels"] == 0 then
+      		ColourNote ("yellow", "", "Slash channel capturing is now ENABLED.")
+      	else
+      		ColourNote ("yellow", "", "Slash channel capturing is now DISABLED.")
+      	end
+      	EnableTrigger("slashchannels", 0 == variables["show_slashchannels"])
+      	variables["show_slashchannels"] = GetTriggerOption("slashchannels","enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1432,16 +1432,6 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-        if variables["slashchannels_echo"] == 0 then
-          ColourNote("yellow", "", "Other slash channels will NOT be shown in the main window.")
-        else
-          ColourNote("yellow", "", "Other slash channels will be shown in the main window.")
-        end
-        SetTriggerOption("slashchannels", "omit_from_output", 0 == variables["slashchannels_echo"])
-        variables["slashchannels_echo"] = GetTriggerOption("slashchannels", "omit_from_output")
-	  end
-	  check_counter = check_counter + 1
-      if numResult == check_counter+hyperlink_skip then
         if variables["groupchat_echo"] == 0 then
           ColourNote("yellow", "", "Group Chat will NOT be shown in the main window.")
         else
@@ -1472,16 +1462,6 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-        if variables["wiznet_echo"] == 0 then
-          ColourNote("yellow", "", "Wiznet will NOT be shown in the main window.")
-        else
-          ColourNote("yellow", "", "Wiznet will be shown in the main window.")
-        end
-        SetTriggerOption("immooc", "omit_from_output", 0 == variables["wiznet_echo"])
-        variables["wiznet_echo"] = GetTriggerOption("immooc", "omit_from_output")
-	  end
-	  check_counter = check_counter + 1
-      if numResult == check_counter+hyperlink_skip then
         if variables["newbie_echo"] == 0 then
           ColourNote("yellow", "", "Newbie will NOT be shown in the main window.")
         else
@@ -1490,6 +1470,16 @@ function right_click_menu (hotspot_id)
         SetTriggerOption("newbie", "omit_from_output", 0 == variables["newbie_echo"])
         variables["newbie_echo"] = GetTriggerOption("newbie", "omit_from_output")
 		--REMOVE FROM HERE
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
+        if variables["wiznet_echo"] == 0 then
+          ColourNote("yellow", "", "Wiznet will NOT be shown in the main window.")
+        else
+          ColourNote("yellow", "", "Wiznet will be shown in the main window.")
+        end
+        SetTriggerOption("immooc", "omit_from_output", 0 == variables["wiznet_echo"])
+        variables["wiznet_echo"] = GetTriggerOption("immooc", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1502,6 +1492,16 @@ function right_click_menu (hotspot_id)
         variables["godnet_echo"] = GetTriggerOption("godnet", "omit_from_output")
       end     
       check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
+        if variables["slashchannels_echo"] == 0 then
+          ColourNote("yellow", "", "Other slash channels will NOT be shown in the main window.")
+        else
+          ColourNote("yellow", "", "Other slash channels will be shown in the main window.")
+        end
+        SetTriggerOption("slashchannels", "omit_from_output", 0 == variables["slashchannels_echo"])
+        variables["slashchannels_echo"] = GetTriggerOption("slashchannels", "omit_from_output")
+	  end
+	  check_counter = check_counter + 1
       --if echo_skip ~= 0 then
       --   if numResult == 17+hyperlink_skip then
       --      Execute("chats echo on")
