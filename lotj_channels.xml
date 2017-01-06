@@ -41,7 +41,7 @@ USAGE:
   <trigger enabled="n" name="ask1" match="" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="ask2" match="'*tell*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="clan" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="empire" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
 <!--  <trigger enabled="n" name="comms" match="CommNet*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
 <!--  <trigger enabled="n" name="broadcast" match="Broadcasting Network*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
   
@@ -132,14 +132,14 @@ starty = ""
 function setup()
 
 -- Automating a lot of tedium
-variable_names = {"show_say", "show_clan", "show_comms", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_councilnet",
-"say_echo", "clan_echo", "comms_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
+variable_names = {"show_say", "show_empire", "show_comms", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_councilnet",
+"say_echo", "empire_echo", "comms_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
 variables = {}
 for _,v in pairs(variable_names) do
 	variables[v] = tonumber(GetVariable(v)) or 1
 end
 --[[show_say = tonumber(GetVariable("show_say")) or 1
-show_clan = tonumber(GetVariable("show_clan")) or 1
+show_empire = tonumber(GetVariable("show_empire")) or 1
 show_comms = tonumber(GetVariable("show_comms")) or 1
 show_broadcast = tonumber(GetVariable("show_broadcast")) or 1
 show_buzz = tonumber(GetVariable("show_buzz")) or 1
@@ -151,7 +151,7 @@ show_tellchat = tonumber(GetVariable("show_tellchat")) or 1
 show_councilnet = tonumber(GetVariable("show_councilnet")) or 1
 
 say_echo = tonumber(GetVariable("say_echo")) or 1
-clan_echo = tonumber(GetVariable("clan_echo")) or 1
+empire_echo = tonumber(GetVariable("empire_echo")) or 1
 comms_echo = tonumber(GetVariable("comms_echo")) or 1
 ooc_echo = tonumber(GetVariable("ooc_echo")) or 1
 wiznet_echo = tonumber(GetVariable("wiznet_echo")) or 1
@@ -169,7 +169,7 @@ SetTriggerOption("say2", "enabled", variables["show_say"])
 SetTriggerOption("ask1", "enabled", variables["show_say"])
 SetTriggerOption("ask2", "enabled", variables["show_say"])
 SetTriggerOption("exclaim1", "enabled", variables["show_say"])
-SetTriggerOption("clan", "enabled", variables["show_clan"])
+SetTriggerOption("empire", "enabled", variables["show_empire"])
 SetTriggerOption("comms", "enabled", variables["show_comms"])
 SetTriggerOption("broadcast", "enabled", variables["show_broadcast"])
 SetTriggerOption("buzz", "enabled", variables["show_buzz"])
@@ -187,7 +187,7 @@ SetTriggerOption("say2", "omit_from_output", variables["say_echo"])
 SetTriggerOption("ask1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("ask2", "omit_from_output", variables["say_echo"])
 SetTriggerOption("exclaim1", "omit_from_output", variables["say_echo"])
-SetTriggerOption("clan", "omit_from_output", variables["clan_echo"])
+SetTriggerOption("empire", "omit_from_output", variables["empire_echo"])
 SetTriggerOption("comms", "omit_from_output", variables["comms_echo"])
 SetTriggerOption("ooc", "omit_from_output", variables["ooc_echo"])
 SetTriggerOption("immooc", "omit_from_output", variables["ooc_echo"])
@@ -412,7 +412,7 @@ function OnPluginSaveState()
     SetVariable(v, variables[v])
   end
 --[[SetVariable("show_say", show_say)
-	SetVariable("show_clan", show_clan)
+	SetVariable("show_empire", show_empire)
 	SetVariable("show_broadcast", show_broadcast)
 	SetVariable("show_buzz", show_buzz)
 	SetVariable("show_comms", show_comms)
@@ -423,7 +423,7 @@ function OnPluginSaveState()
 	SetVariable("show_tellchat", show_tellchat)
 	SetVariable("show_councilnet", show_councilnet)
 	SetVariable("say_echo", say_echo)
-	SetVariable("clan_echo", clan_echo)
+	SetVariable("empire_echo", empire_echo)
 	SetVariable("comms_echo", comms_echo)
 	SetVariable("ooc_echo", ooc_echo)
 	SetVariable("wiznet_echo", wiznet_echo)
@@ -834,7 +834,7 @@ function untagged_info (name, line, wildcards, styles)
   if variables["say_echo"] == 1 and (name == "oocchannel" or name == "say2" or name=="ask1" or name=="ask2" or name=="exclaim1") then
   EnableTrigger("end_gag", true)
   end
-  if variables["clan_echo"] == 1 and name=="clan" then
+  if variables["empire_echo"] == 1 and name=="empire" then
   EnableTrigger("end_gag", true)
   end
   if variables["comms_echo"] == 1 and name=="comms" then
@@ -1113,7 +1113,7 @@ end -- function chat_hide
 
 require "pairsbykeys"
 
---local init_channel_names = {"advice","answer","auction","barter","claninfo","clantalk","curse","debate","dtell","ftalk","gametalk","gclan","gossip","gratz","gsocial","gtell","helper","immtalk","lasertag","ltalk","market","mobsay","music","mxit","newbie","nobletalk","pchat","pokerinfo","ptell","question","quote","racetalk","rauction","rp","say","sports","spouse","tech","tell","tiertalk","trivia","wangrp","wardrums"}
+--local init_channel_names = {"advice","answer","auction","barter","empireinfo","empiretalk","curse","debate","dtell","ftalk","gametalk","gempire","gossip","gratz","gsocial","gtell","helper","immtalk","lasertag","ltalk","market","mobsay","music","mxit","newbie","nobletalk","pchat","pokerinfo","ptell","question","quote","racetalk","rauction","rp","say","sports","spouse","tech","tell","tiertalk","trivia","wangrp","wardrums"}
 --[[local init_channel_names = {"Say","Clan","Comms","OOC","Newbie","Immchat","RPCchat","ImmNet","CouncilNet"}
 channels_table = {}
 loadstring(GetVariable("channels_table") or "")()
@@ -1151,8 +1151,8 @@ function right_click_menu (hotspot_id)
    menustring = menustring .. "|>Capture Channels|"..
       ((variables["show_say"]==1 and "+") or "")..
       "Say|"..
-      ((variables["show_clan"]==1 and "+") or "")..
-      "Clan|"..
+      ((variables["show_empire"]==1 and "+") or "")..
+      "Empire Chat|"..
       ((variables["show_comms"]==1 and "+") or "")..
       "Comms|"..
       ((variables["show_groupchat"]==1 and "+") or "")..
@@ -1179,7 +1179,7 @@ function right_click_menu (hotspot_id)
   	--REMOVE FROM HERE?
   menustring = menustring .. "|>Echo Channels in Main Window|"..
                               ((variables["say_echo"]==0 and "+") or "").. "Say|"..
-                              ((variables["clan_echo"]==0 and "+") or "").. "Clan|"..
+                              ((variables["empire_echo"]==0 and "+") or "").. "Empire Chat|"..
                               ((variables["comms_echo"]==0 and "+") or "").. "Comms|"..
                               ((variables["groupchat_echo"]==0 and "+") or "").. "Group Chat|"..
                               ((variables["tellchat_echo"]==0 and "+") or "").. "Tells|"..
@@ -1311,13 +1311,13 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-      	if variables["show_clan"] == 0 then
+      	if variables["show_empire"] == 0 then
       		ColourNote ("yellow", "", "Clan capturing is now ENABLED.")
       	else
       		ColourNote ("yellow", "", "Clan capturing is now DISABLED.")
       	end
-      	EnableTrigger("clan", 0 == variables["show_clan"])
-      	variables["show_clan"] = GetTriggerOption("clan","enabled")
+      	EnableTrigger("empire", 0 == variables["show_empire"])
+      	variables["show_empire"] = GetTriggerOption("empire","enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1428,13 +1428,13 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-        if variables["clan_echo"] == 0 then
+        if variables["empire_echo"] == 0 then
           ColourNote("yellow", "", "Clan will NOT be shown in the main window.")
         else
           ColourNote("yellow", "", "Clan will be shown in the main window.")
         end
-        SetTriggerOption("clan", "omit_from_output", 0 == variables["clan_echo"])
-        variables["clan_echo"] = GetTriggerOption("clan", "omit_from_output")
+        SetTriggerOption("empire", "omit_from_output", 0 == variables["empire_echo"])
+        variables["empire_echo"] = GetTriggerOption("empire", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
