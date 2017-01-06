@@ -6,7 +6,7 @@ local BLUE = 5
 local MAGENTA = 6 
 local CYAN = 7 
 local WHITE = 8
-local DEFAULT_COLOUR = "&w"
+local DEFAULT_COLOUR = "&0"
 
 function init_ansi()
    -- map from color values to aardwolf color codes
