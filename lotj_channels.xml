@@ -37,13 +37,13 @@ USAGE:
 
   <trigger enabled="n" name="say1" match="* say*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="say2" match="* say*, out of character, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="buzz" match="[/lotj *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="buzz" match="* pokes you in the ribs." regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="ask1" match="* ask* *, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="shout" match="* shout*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="empire" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="slashchannels" match="[/* *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
-<!--  <trigger enabled="n" name="broadcast" match="Broadcasting Network*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
+  <trigger enabled="n" name="deathlog" match="[ DEATH:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> 
   
   --- begin OOC chat grabs
   
@@ -52,7 +52,6 @@ USAGE:
   <trigger enabled="n" name="ooc" match="*/ooc *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> 
   <trigger enabled="n" name="newbie" match="*/newbie *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="immooc" match="[IMMORTAL*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="deathlog" match="[ DEATH:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="godnet" match="[GOD*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />  -->
   
   -- blank line gag
@@ -131,7 +130,7 @@ starty = ""
 function setup()
 
 -- Automating a lot of tedium
-variable_names = {"show_say", "show_empire", "show_slashchannels", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
+variable_names = {"show_say", "show_empire", "show_slashchannels", "show_deathlog", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
 "say_echo", "empire_echo", "slashchannels_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
 variables = {}
 for _,v in pairs(variable_names) do
@@ -140,7 +139,7 @@ end
 --[[show_say = tonumber(GetVariable("show_say")) or 1
 show_empire = tonumber(GetVariable("show_empire")) or 1
 show_slashchannels = tonumber(GetVariable("show_slashchannels")) or 1
-show_broadcast = tonumber(GetVariable("show_broadcast")) or 1
+show_deathlog = tonumber(GetVariable("show_deathlog")) or 1
 show_buzz = tonumber(GetVariable("show_buzz")) or 1
 show_ooc = tonumber(GetVariable("show_ooc")) or 1
 show_wiznet = tonumber(GetVariable("show_wiznet")) or 1
@@ -170,14 +169,13 @@ SetTriggerOption("shout", "enabled", variables["show_say"])
 SetTriggerOption("exclaim1", "enabled", variables["show_say"])
 SetTriggerOption("empire", "enabled", variables["show_empire"])
 SetTriggerOption("slashchannels", "enabled", variables["show_slashchannels"])
-SetTriggerOption("broadcast", "enabled", variables["show_broadcast"])
+SetTriggerOption("deathlog", "enabled", variables["show_deathlog"])
 SetTriggerOption("buzz", "enabled", variables["show_buzz"])
 SetTriggerOption("groupchat", "enabled", variables["show_groupchat"])
 SetTriggerOption("tellchat", "enabled", variables["show_tellchat"])
 SetTriggerOption("ooc", "enabled", variables["show_ooc"])
 SetTriggerOption("newbie", "enabled", variables["show_newbie"])
 SetTriggerOption("immooc", "enabled", variables["show_wiznet"])
-SetTriggerOption("deathlog", "enabled", variables["show_ooc"])
 --REMOVE FROM HERE
 SetTriggerOption("godnet", "enabled", variables["show_godnet"])
 
@@ -189,8 +187,6 @@ SetTriggerOption("exclaim1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("empire", "omit_from_output", variables["empire_echo"])
 SetTriggerOption("slashchannels", "omit_from_output", variables["slashchannels_echo"])
 SetTriggerOption("ooc", "omit_from_output", variables["ooc_echo"])
-SetTriggerOption("immooc", "omit_from_output", variables["ooc_echo"])
-SetTriggerOption("deathlog", "omit_from_output", variables["ooc_echo"])
 SetTriggerOption("immooc", "omit_from_output", variables["wiznet_echo"])
 SetTriggerOption("newbie", "omit_from_output", variables["newbie_echo"])
 SetTriggerOption("groupchat", "omit_from_output", variables["groupchat_echo"])
@@ -408,12 +404,12 @@ function OnPluginSaveState()
   SetVariable("WINDOW_HEIGHT", height)
   SetVariable("WINDOW_NAME", WINDOW_NAME)
   for _,v in pairs(variable_names) do
-    Tell(v.." ")
+    --Tell(v.." ")
     SetVariable(v, variables[v])
   end
 --[[SetVariable("show_say", show_say)
 	SetVariable("show_empire", show_empire)
-	SetVariable("show_broadcast", show_broadcast)
+	SetVariable("show_deathlog", show_deathlog)
 	SetVariable("show_buzz", show_buzz)
 	SetVariable("show_slashchannels", show_slashchannels)
 	SetVariable("show_ooc", show_ooc)
@@ -846,7 +842,7 @@ function untagged_info (name, line, wildcards, styles)
   if variables["tellchat_echo"] == 1 and name=="tellchat" then
   EnableTrigger("end_gag", true)  
   end
-  if variables["ooc_echo"] == 1 and (name=="ooc" or name=="deathlog") then
+  if variables["ooc_echo"] == 1 and (name=="ooc") then
   EnableTrigger("end_gag", true)
   end
   if variables["wiznet_echo"] == 1 and name == "immooc" then
@@ -1171,8 +1167,8 @@ function right_click_menu (hotspot_id)
       
    
   menustring = menustring .. "|>Capture Other Info|"..
-  		((show_broadcast==1 and "+") or "")..
-  		"Broadcast|"..
+  		((show_deathlog==1 and "+") or "")..
+  		"Death Logs|"..
   		((show_buzz==1 and "+") or "")..
   		"Microphone Buzz|"..
   	  "<"
@@ -1356,7 +1352,6 @@ function right_click_menu (hotspot_id)
       	else
       		ColourNote ("yellow", "", "/OOC capturing is now DISABLED.")
       	end
-      	EnableTrigger("deathlog", 0 == variables["show_ooc"])
       	EnableTrigger("ooc", 0 == variables["show_ooc"])
       	variables["show_ooc"] = GetTriggerOption("ooc","enabled")
 	  end
@@ -1393,20 +1388,20 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-      	if variables["show_broadcast"] == 0 then
-         	ColourNote ("yellow", "", "BROADCAST_DUMMY capturing is now ENABLED.")
+      	if variables["show_deathlog"] == 0 then
+         	ColourNote ("yellow", "", "Death logs capturing is now ENABLED.")
         else
-         	ColourNote ("yellow", "", "BROADCAST_DUMMY capturing is now DISABLED.")
+         	ColourNote ("yellow", "", "Death logs capturing is now DISABLED.")
         end
-        EnableTrigger("broadcast", 0 == variables["show_broadcast"])
-        variables["show_broadcast"] = GetTriggerOption("broadcast","enabled")
+        EnableTrigger("deathlog", 0 == variables["show_deathlog"])
+        variables["show_deathlog"] = GetTriggerOption("deathlog","enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_buzz"] == 0 then
-      		ColourNote ("yellow", "", "Microphone Buzz_DUMMY capturing is now ENABLED.")
+      		ColourNote ("yellow", "", "Poke capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "Microphone Buzz_DUMMY capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "Poke capturing is now DISABLED.")
       	end
       	EnableTrigger("buzz", 0 == variables["show_buzz"])
       	variables["show_buzz"] = GetTriggerOption("buzz","enabled") 
@@ -1473,8 +1468,6 @@ function right_click_menu (hotspot_id)
           ColourNote("yellow", "", "OOC will be shown in the main window.")
         end
         SetTriggerOption("ooc", "omit_from_output", 0 == variables["ooc_echo"])
-       -- SetTriggerOption("immooc", "omit_from_output", 0 == variables["ooc_echo"])
-        SetTriggerOption("deathlog", "omit_from_output", 0 == variables["ooc_echo"])
         variables["ooc_echo"] = GetTriggerOption("ooc", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
