@@ -38,16 +38,16 @@ USAGE:
   <trigger enabled="n" name="oocchannel" match="*/ooc *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="say2" match="'*/newbie *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="buzz" match="[/lotj *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="ask1" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="ask1" match="" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="ask2" match="'*tell*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-<!--  <trigger enabled="n" name="clan" match="*{*}<*>[*]*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
+  <trigger enabled="n" name="clan" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
 <!--  <trigger enabled="n" name="comms" match="CommNet*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
 <!--  <trigger enabled="n" name="broadcast" match="Broadcasting Network*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
   
   --- begin OOC chat grabs
   
-  <trigger enabled="n" name="groupchat" match="[g*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="groupchat" match="[gsay *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="tellchat" match="*tell*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
 <!--  <trigger enabled="n" name="ooc" match="[/*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
 <!--  <trigger enabled="n" name="newbie" match="[ *! ]" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
@@ -1114,7 +1114,7 @@ end -- function chat_hide
 require "pairsbykeys"
 
 --local init_channel_names = {"advice","answer","auction","barter","claninfo","clantalk","curse","debate","dtell","ftalk","gametalk","gclan","gossip","gratz","gsocial","gtell","helper","immtalk","lasertag","ltalk","market","mobsay","music","mxit","newbie","nobletalk","pchat","pokerinfo","ptell","question","quote","racetalk","rauction","rp","say","sports","spouse","tech","tell","tiertalk","trivia","wangrp","wardrums"}
-local init_channel_names = {"Say","Clan","Comms","OOC","Newbie","Immchat","RPCchat","ImmNet","CouncilNet"}
+--[[local init_channel_names = {"Say","Clan","Comms","OOC","Newbie","Immchat","RPCchat","ImmNet","CouncilNet"}
 channels_table = {}
 loadstring(GetVariable("channels_table") or "")()
 
@@ -1130,7 +1130,7 @@ function constructDefaultChannels()
    end
 end
 
-constructDefaultChannels()
+constructDefaultChannels()]]
 
 -- right click menu
 function right_click_menu (hotspot_id)
