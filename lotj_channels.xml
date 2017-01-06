@@ -1166,7 +1166,7 @@ function right_click_menu (hotspot_id)
       ((variables["show_newbie"]==1 and "+") or "")..
       "Newbie|"..
       ((variables["show_godnet"]==1 and "+") or "")..
-      "CouncilNet|"..
+      "Godnet|"..
       "<"
       
    
@@ -1186,7 +1186,7 @@ function right_click_menu (hotspot_id)
                               ((variables["ooc_echo"]==0 and "+") or "").. "OOC|"..
 							  ((variables["wiznet_echo"]==0 and "+") or "").. "Wiznet|"..
                               ((variables["newbie_echo"]==0 and "+") or "").. "Newbie|"..
-                              ((variables["godnet_echo"]==0 and "+") or "").. "CouncilNet|"..
+                              ((variables["godnet_echo"]==0 and "+") or "").. "Godnet|"..
                               "<|-"
                               
   
