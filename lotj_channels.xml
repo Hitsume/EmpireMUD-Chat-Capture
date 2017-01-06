@@ -7,6 +7,7 @@
 <!-- The order of the menu items near the start of right_click_menu, where the menu is built, -->
 <!-- must match the order further down, where the user selection is checked. This is something I'd like to clean up. -Hitsume -->
 
+<!-- KNOWN BUG: doesn't understand extended colors, giving &x### codes. -->
 <muclient>
 <plugin
    name="Chat_Capture"
