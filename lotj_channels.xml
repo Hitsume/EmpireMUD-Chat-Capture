@@ -1219,6 +1219,7 @@ function right_click_menu (hotspot_id)
       menustring) -- content
    if result ~= "" then
       numResult = tonumber(result)
+	  local check_counter = 0 -- Tracks the number of results we've checked for.
       if numResult == hyperlink_skip-1 then
          local res = OpenBrowser(url)
          if res ~= 0 then
@@ -1282,7 +1283,9 @@ function right_click_menu (hotspot_id)
       elseif numResult == 10+hyperlink_skip then
          date_format = "[%I:%M:%S%p] "
          ColourNote ("yellow", "", "Timestamps in communication window ENABLED using format like '1:22:06 PM'.")
-      elseif numResult == 11+hyperlink_skip then
+	  end
+	  check_counter = 11
+      if numResult == check_counter+hyperlink_skip then
          --local tbl = {}
          --local defaults = {}
          --local i = 1
@@ -1309,8 +1312,10 @@ function right_click_menu (hotspot_id)
 	        EnableTrigger("ask2", 0 == variables["show_say"])
 	        EnableTrigger("exclaim1", 0 == variables["show_say"])
 	        EnableTrigger("exclaim2", 0 == variables["show_say"])
-	        variables["show_say"] = GetTriggerOption("oocchannel", "enabled")       
-      elseif numResult == 12+hyperlink_skip then
+	        variables["show_say"] = GetTriggerOption("oocchannel", "enabled")
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_clan"] == 0 then
       		ColourNote ("yellow", "", "Clan capturing is now ENABLED.")
       	else
@@ -1319,7 +1324,9 @@ function right_click_menu (hotspot_id)
       	EnableTrigger("clan", 0 == variables["show_clan"])
       	EnableTrigger("clan2", 0 == variables["show_clan"])
       	variables["show_clan"] = GetTriggerOption("clan","enabled")
-      elseif numResult == 13+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_comms"] == 0 then
       		ColourNote ("yellow", "", "Comms capturing is now ENABLED.")
       	else
@@ -1327,7 +1334,9 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("comms", 0 == variables["show_comms"])
       	variables["show_comms"] = GetTriggerOption("comms","enabled")
-      elseif numResult == 14+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_groupchat"] == 0 then
       		ColourNote ("yellow", "", "Group Chat capturing is now ENABLED.")
       	else
@@ -1335,7 +1344,9 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("groupchat", 0 == variables["show_groupchat"])
       	variables["show_groupchat"] = GetTriggerOption("groupchat","enabled")
-      elseif numResult == 15+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_tellchat"] == 0 then
       		ColourNote ("yellow", "", "Tell capturing is now ENABLED.")
       	else
@@ -1343,7 +1354,9 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("tellchat", 0 == variables["show_tellchat"])
       	variables["show_tellchat"] = GetTriggerOption("tellchat","enabled")
-      elseif numResult == 16+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_ooc"] == 0 then
       		ColourNote ("yellow", "", "OOC capturing is now ENABLED.")
       	else
@@ -1353,7 +1366,9 @@ function right_click_menu (hotspot_id)
       	EnableTrigger("deathlog", 0 == variables["show_ooc"])
       	EnableTrigger("ooc", 0 == variables["show_ooc"])
       	variables["show_ooc"] = GetTriggerOption("ooc","enabled")
-      elseif numResult == 17+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_wiznet"] == 0 then
       		ColourNote ("yellow", "", "Wiznet capturing is now ENABLED.")
       	else
@@ -1361,7 +1376,9 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("immooc", 0 == variables["show_wiznet"])
       	variables["show_wiznet"] = GetTriggerOption("immooc","enabled")
-      elseif numResult == 18+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_newbie"] == 0 then
       		ColourNote ("yellow", "", "Newbie capturing is now ENABLED.")
       	else
@@ -1370,7 +1387,9 @@ function right_click_menu (hotspot_id)
       	EnableTrigger("newbie", 0 == variables["show_newbie"])
       	variables["show_newbie"] = GetTriggerOption("newbie","enabled")
 	  --REMOVE FROM HERE
-      elseif numResult == 19+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_councilnet"] == 0 then
       		ColourNote ("yellow", "", "CouncilNet capturing is now ENABLED.")
       	else
@@ -1378,7 +1397,9 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("councilnet", 0 == variables["show_councilnet"])
       	variables["show_councilnet"] = GetTriggerOption("councilnet","enabled")
-      elseif numResult == 20+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_broadcast"] == 0 then
          	ColourNote ("yellow", "", "Broadcast capturing is now ENABLED.")
         else
@@ -1386,7 +1407,9 @@ function right_click_menu (hotspot_id)
         end
         EnableTrigger("broadcast", 0 == variables["show_broadcast"])
         variables["show_broadcast"] = GetTriggerOption("broadcast","enabled")
-      elseif numResult == 21+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
       	if variables["show_buzz"] == 0 then
       		ColourNote ("yellow", "", "Microphone Buzz capturing is now ENABLED.")
       	else
@@ -1394,9 +1417,9 @@ function right_click_menu (hotspot_id)
       	end
       	EnableTrigger("buzz", 0 == variables["show_buzz"])
       	variables["show_buzz"] = GetTriggerOption("buzz","enabled") 
-      end
-      
-      if numResult == 22+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["say_echo"] == 0 then
           ColourNote("yellow", "", "Say will NOT be shown in the main window.")
         else
@@ -1409,7 +1432,9 @@ function right_click_menu (hotspot_id)
         SetTriggerOption("exclaim1", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("exclaim2", "omit_from_output", 0 == variables["say_echo"])
         variables["say_echo"] = GetTriggerOption("oocchannel", "omit_from_output")
-      elseif numResult == 23+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["clan_echo"] == 0 then
           ColourNote("yellow", "", "Clan will NOT be shown in the main window.")
         else
@@ -1418,7 +1443,9 @@ function right_click_menu (hotspot_id)
         SetTriggerOption("clan", "omit_from_output", 0 == variables["clan_echo"])
         SetTriggerOption("clan2", "omit_from_output", 0 == variables["clan_echo"])
         variables["clan_echo"] = GetTriggerOption("clan", "omit_from_output")
-       elseif numResult == 24+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["comms_echo"] == 0 then
           ColourNote("yellow", "", "Comms will NOT be shown in the main window.")
         else
@@ -1426,7 +1453,9 @@ function right_click_menu (hotspot_id)
         end
         SetTriggerOption("comms", "omit_from_output", 0 == variables["comms_echo"])
         variables["comms_echo"] = GetTriggerOption("comms", "omit_from_output")
-      elseif numResult == 25+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["groupchat_echo"] == 0 then
           ColourNote("yellow", "", "Group Chat will NOT be shown in the main window.")
         else
@@ -1434,7 +1463,9 @@ function right_click_menu (hotspot_id)
         end
         SetTriggerOption("groupchat", "omit_from_output", 0 == variables["groupchat_echo"])
         variables["groupchat_echo"] = GetTriggerOption("groupchat", "omit_from_output")
-      elseif numResult == 26+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["tellchat_echo"] == 0 then
           ColourNote("yellow", "", "Tells will NOT be shown in the main window.")
         else
@@ -1442,17 +1473,21 @@ function right_click_menu (hotspot_id)
         end
         SetTriggerOption("tellchat", "omit_from_output", 0 == variables["tellchat_echo"])
         variables["tellchat_echo"] = GetTriggerOption("tellchat", "omit_from_output")
-      elseif numResult == 27+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["ooc_echo"] == 0 then
           ColourNote("yellow", "", "OOC will NOT be shown in the main window.")
         else
           ColourNote("yellow", "", "OOC will be shown in the main window.")
         end
         SetTriggerOption("ooc", "omit_from_output", 0 == variables["ooc_echo"])
-        SetTriggerOption("immooc", "omit_from_output", 0 == variables["ooc_echo"])
+       -- SetTriggerOption("immooc", "omit_from_output", 0 == variables["ooc_echo"])
         SetTriggerOption("deathlog", "omit_from_output", 0 == variables["ooc_echo"])
         variables["ooc_echo"] = GetTriggerOption("ooc", "omit_from_output")
-      elseif numResult == 28+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["wiznet_echo"] == 0 then
           ColourNote("yellow", "", "Wiznet will NOT be shown in the main window.")
         else
@@ -1460,7 +1495,9 @@ function right_click_menu (hotspot_id)
         end
         SetTriggerOption("immooc", "omit_from_output", 0 == variables["wiznet_echo"])
         variables["wiznet_echo"] = GetTriggerOption("immooc", "omit_from_output")
-      elseif numResult == 29+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["newbie_echo"] == 0 then
           ColourNote("yellow", "", "Newbie will NOT be shown in the main window.")
         else
@@ -1469,7 +1506,9 @@ function right_click_menu (hotspot_id)
         SetTriggerOption("newbie", "omit_from_output", 0 == variables["newbie_echo"])
         variables["newbie_echo"] = GetTriggerOption("newbie", "omit_from_output")
 		--REMOVE FROM HERE
-      elseif numResult == 30+hyperlink_skip then
+	  end
+	  check_counter = check_counter + 1
+      if numResult == check_counter+hyperlink_skip then
         if variables["councilnet_echo"] == 0 then
           ColourNote("yellow", "", "CouncilNet will NOT be shown in the main window.")
         else
@@ -1478,7 +1517,7 @@ function right_click_menu (hotspot_id)
         SetTriggerOption("councilnet", "omit_from_output", 0 == variables["councilnet_echo"])
         variables["councilnet_echo"] = GetTriggerOption("councilnet", "omit_from_output")
       end     
-      
+      check_counter = check_counter + 1
       --if echo_skip ~= 0 then
       --   if numResult == 17+hyperlink_skip then
       --      Execute("chats echo on")
@@ -1501,7 +1540,7 @@ function right_click_menu (hotspot_id)
       --   end
       --end
       
-      if numResult == 31+hyperlink_skip+echo_skip then
+      if numResult == check_counter+hyperlink_skip+echo_skip then
          log_to_file = (((0 == log_to_file) and 1) or 0)
          SetVariable("log_to_file", log_to_file)
          if log_to_file == 0 then
@@ -1509,13 +1548,13 @@ function right_click_menu (hotspot_id)
          else
             ColourNote ("yellow", "", "Logging to file is now ENABLED.")
          end
-      elseif numResult == 32+hyperlink_skip+echo_skip then
+      elseif numResult == check_counter+1+hyperlink_skip+echo_skip then
       		local newfile = utils.filepicker ("Choose log file...", "ChatLog.txt", "txt", { txt = "Text log file" }, true )
 				if newfile then
 					log_filename = newfile
 					ColourNote ("yellow", "", "Logging chat to "..log_filename..".")
 				end
-      elseif numResult == 33+hyperlink_skip+echo_skip then
+      elseif numResult == check_counter+2+hyperlink_skip+echo_skip then
          log_colour_codes = (((0 == log_colour_codes) and 1) or 0)
          SetVariable("log_colour_codes", log_colour_codes)
          if log_colour_codes == 0 then
@@ -1523,7 +1562,7 @@ function right_click_menu (hotspot_id)
          else
             ColourNote ("yellow", "", "Color codes will be included in the log file.")
          end
-      elseif numResult == 34+hyperlink_skip+echo_skip then
+      elseif numResult == check_counter+3+hyperlink_skip+echo_skip then
          log_timestamps = (((0 == log_timestamps) and 1) or 0)
          SetVariable("log_timestamps", log_timestamps)
          if log_timestamps == 0 then
