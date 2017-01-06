@@ -13,7 +13,7 @@
    purpose="Move chats to a miniwindow"
    date_written="2010-10-25"
    requires="4.94"
-   version="0.2"
+   version="0.9"
    save_state="y"
 >
 
@@ -41,8 +41,8 @@ USAGE:
   <trigger enabled="n" name="ask1" match="* ask* *, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="shout" match="* shout*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="empire" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="slashchannels" match="[/* *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
+  <trigger enabled="n" name="empire" match="^\[EMPIRE (.*?)\]\:(.*?)$|^\[EMPIRE\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="slashchannels" match="^\[\/.+ (.*?)\]\:(.*?)$|^\[\/.+\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="101" />
   <trigger enabled="n" name="deathlog" match="[ DEATH:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> 
   
   --- begin OOC chat grabs
@@ -51,8 +51,8 @@ USAGE:
   <trigger enabled="n" name="tellchat" match="*tell*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="ooc" match="*/ooc *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> 
   <trigger enabled="n" name="newbie" match="*/newbie *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="immooc" match="[IMMORTAL*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="godnet" match="[GOD*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />  -->
+  <trigger enabled="n" name="immooc" match="^\[IMMORTAL (.*?)\]\:(.*?)$|^\[IMMORTAL\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="godnet" match="^\[GOD (.*?)\]\:(.*?)$|^\[GOD\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="100" />
   
   -- blank line gag
   <trigger enabled="n" match="^$" regexp="y" name="end_gag" group="end_gag" omit_from_output="y" sequence="100" send_to="12" >
@@ -131,7 +131,7 @@ function setup()
 
 -- Automating a lot of tedium
 variable_names = {"show_say", "show_empire", "show_slashchannels", "show_deathlog", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
-"say_echo", "empire_echo", "slashchannels_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
+"say_echo", "empire_echo", "slashchannels_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo", "godnet_echo"}
 variables = {}
 for _,v in pairs(variable_names) do
 	variables[v] = tonumber(GetVariable(v)) or 1
@@ -1379,9 +1379,9 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
       	if variables["show_godnet"] == 0 then
-      		ColourNote ("yellow", "", "CouncilNet capturing is now ENABLED.")
+      		ColourNote ("yellow", "", "GodNet capturing is now ENABLED.")
       	else
-      		ColourNote ("yellow", "", "CouncilNet capturing is now DISABLED.")
+      		ColourNote ("yellow", "", "GodNet capturing is now DISABLED.")
       	end
       	EnableTrigger("godnet", 0 == variables["show_godnet"])
       	variables["show_godnet"] = GetTriggerOption("godnet","enabled")
@@ -1494,9 +1494,9 @@ function right_click_menu (hotspot_id)
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
         if variables["godnet_echo"] == 0 then
-          ColourNote("yellow", "", "CouncilNet will NOT be shown in the main window.")
+          ColourNote("yellow", "", "GodNet will NOT be shown in the main window.")
         else
-          ColourNote("yellow", "", "CouncilNet will be shown in the main window.")
+          ColourNote("yellow", "", "GodNet will be shown in the main window.")
         end
         SetTriggerOption("godnet", "omit_from_output", 0 == variables["godnet_echo"])
         variables["godnet_echo"] = GetTriggerOption("godnet", "omit_from_output")
