@@ -3,6 +3,9 @@
 
 <!-- Bits of this plugin and ideas were borrowed and remixed from the MUSHclient community. http://www.gammon.com.au/forum/?id=9385 and others. -->
 <!-- Original script by Fiendish with help from Orogan, modified for LotJ by Johnson and for EmpireMUD by Nyarko and Hitsume -->
+<!-- Note for anyone modifying or extending the script: -->
+<!-- The order of the menu items near the start of right_click_menu, where the menu is built, -->
+<!-- must match the order further down, where the user selection is checked. This is something I'd like to clean up. -Hitsume -->
 
 <muclient>
 <plugin
