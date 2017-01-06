@@ -6,7 +6,7 @@
 
 <muclient>
 <plugin
-   name="EmpireMUD_Chat_Capture_Miniwindow"
+   name="EmpireMUD_Chat_Capture"
    author="Hitsume"
    id="56423564b3eda7e8b471477f"
    language="Lua"
@@ -437,7 +437,7 @@ function OnPluginSaveState()
   SetVariable("log_colour_codes", log_colour_codes)
   SetVariable("log_timestamps", log_timestamps)
   --SetVariable("show_donations", show_donations)
-  SetVariable("channels_table", serialize.save("channels_table"))
+  --SetVariable("channels_table", serialize.save("channels_table"))
 end --  OnPluginSaveState
 
 function OnPluginDisable()
