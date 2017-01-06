@@ -35,11 +35,11 @@ USAGE:
 
 --- Begin IC chat grabs
 
-  <trigger enabled="n" name="oocchannel" match="*/ooc *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="say2" match="'*/newbie *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="say1" match="* say*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="say2" match="* say*, out of character, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="buzz" match="[/lotj *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="ask1" match="" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="ask2" match="'*tell*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="ask1" match="* ask* *, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="shout" match="* shout*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="empire" match="*EMPIRE *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
 <!--  <trigger enabled="n" name="comms" match="CommNet*:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
@@ -49,12 +49,12 @@ USAGE:
   
   <trigger enabled="n" name="groupchat" match="[gsay *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="tellchat" match="*tell*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-<!--  <trigger enabled="n" name="ooc" match="[/*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
-<!--  <trigger enabled="n" name="newbie" match="[ *! ]" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
+  <trigger enabled="n" name="ooc" match="*/ooc *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> 
+  <trigger enabled="n" name="newbie" match="*/newbie *]: *" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="immooc" match="[IMMORTAL*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="deathlog" match="[ DEATH:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
 <!--  REMOVE FROM HERE -->
-<!--  <trigger enabled="n" name="councilnet" match="CouncilNet[*]*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />  -->
+  <trigger enabled="n" name="godnet" match="GOD*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />  -->
   
   -- blank line gag
   <trigger enabled="n" match="^$" regexp="y" name="end_gag" group="end_gag" omit_from_output="y" sequence="100" send_to="12" >
@@ -132,7 +132,7 @@ starty = ""
 function setup()
 
 -- Automating a lot of tedium
-variable_names = {"show_say", "show_empire", "show_comms", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_councilnet",
+variable_names = {"show_say", "show_empire", "show_comms", "show_broadcast", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
 "say_echo", "empire_echo", "comms_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo"}
 variables = {}
 for _,v in pairs(variable_names) do
@@ -148,7 +148,7 @@ show_wiznet = tonumber(GetVariable("show_wiznet")) or 1
 show_newbie = tonumber(GetVariable("show_newbie")) or 1
 show_groupchat = tonumber(GetVariable("show_groupchat")) or 1
 show_tellchat = tonumber(GetVariable("show_tellchat")) or 1
-show_councilnet = tonumber(GetVariable("show_councilnet")) or 1
+show_godnet = tonumber(GetVariable("show_godnet")) or 1
 
 say_echo = tonumber(GetVariable("say_echo")) or 1
 empire_echo = tonumber(GetVariable("empire_echo")) or 1
@@ -159,15 +159,15 @@ newbie_echo = tonumber(GetVariable("newbie_echo")) or 1
 groupchat_echo = tonumber(GetVariable("groupchat_echo")) or 1
 tellchat_echo = tonumber(GetVariable("tellchat_echo")) or 1
 --REMOVE FROM HERE
-councilnet_echo = tonumber(GetVariable("councilnet_echo")) or 1]]
+godnet_echo = tonumber(GetVariable("godnet_echo")) or 1]]
 end
 setup() --:S
 
 
-SetTriggerOption("oocchannel", "enabled", variables["show_say"])
+SetTriggerOption("say1", "enabled", variables["show_say"])
 SetTriggerOption("say2", "enabled", variables["show_say"])
 SetTriggerOption("ask1", "enabled", variables["show_say"])
-SetTriggerOption("ask2", "enabled", variables["show_say"])
+SetTriggerOption("shout", "enabled", variables["show_say"])
 SetTriggerOption("exclaim1", "enabled", variables["show_say"])
 SetTriggerOption("empire", "enabled", variables["show_empire"])
 SetTriggerOption("comms", "enabled", variables["show_comms"])
@@ -180,12 +180,12 @@ SetTriggerOption("newbie", "enabled", variables["show_newbie"])
 SetTriggerOption("immooc", "enabled", variables["show_wiznet"])
 SetTriggerOption("deathlog", "enabled", variables["show_ooc"])
 --REMOVE FROM HERE
-SetTriggerOption("councilnet", "enabled", variables["show_councilnet"])
+SetTriggerOption("godnet", "enabled", variables["show_godnet"])
 
-SetTriggerOption("oocchannel", "omit_from_output", variables["say_echo"])
+SetTriggerOption("say1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("say2", "omit_from_output", variables["say_echo"])
 SetTriggerOption("ask1", "omit_from_output", variables["say_echo"])
-SetTriggerOption("ask2", "omit_from_output", variables["say_echo"])
+SetTriggerOption("shout", "omit_from_output", variables["say_echo"])
 SetTriggerOption("exclaim1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("empire", "omit_from_output", variables["empire_echo"])
 SetTriggerOption("comms", "omit_from_output", variables["comms_echo"])
@@ -197,7 +197,7 @@ SetTriggerOption("newbie", "omit_from_output", variables["newbie_echo"])
 SetTriggerOption("groupchat", "omit_from_output", variables["groupchat_echo"])
 SetTriggerOption("tellchat", "omit_from_output", variables["tellchat_echo"])
 --REMOVE FROM HERE
-SetTriggerOption("councilnet", "omit_from_output", variables["councilnet_echo"])
+SetTriggerOption("godnet", "omit_from_output", variables["godnet_echo"])
 
 
 function reset_lotj()
@@ -421,7 +421,7 @@ function OnPluginSaveState()
 	SetVariable("show_newbie", show_newbie)
 	SetVariable("show_groupchat", show_groupchat)
 	SetVariable("show_tellchat", show_tellchat)
-	SetVariable("show_councilnet", show_councilnet)
+	SetVariable("show_godnet", show_godnet)
 	SetVariable("say_echo", say_echo)
 	SetVariable("empire_echo", empire_echo)
 	SetVariable("comms_echo", comms_echo)
@@ -431,7 +431,7 @@ function OnPluginSaveState()
 	SetVariable("groupchat_echo", groupchat_echo)
 	SetVariable("tellchat_echo", tellchat_echo)
 	--REMOVE FROM HERE
-	SetVariable("councilnet_echo", councilnet_echo)]]
+	SetVariable("godnet_echo", godnet_echo)]]
   SetVariable("log_to_file", log_to_file)
   SetVariable("log_filename", log_filename)
   SetVariable("log_colour_codes", log_colour_codes)
@@ -831,7 +831,7 @@ end
 
 function untagged_info (name, line, wildcards, styles)
   stampAndStore(styles)
-  if variables["say_echo"] == 1 and (name == "oocchannel" or name == "say2" or name=="ask1" or name=="ask2" or name=="exclaim1") then
+  if variables["say_echo"] == 1 and (name == "say1" or name == "say2" or name=="ask1" or name=="shout" or name=="exclaim1") then
   EnableTrigger("end_gag", true)
   end
   if variables["empire_echo"] == 1 and name=="empire" then
@@ -856,7 +856,7 @@ function untagged_info (name, line, wildcards, styles)
   EnableTrigger("end_gag", true)
   end
   --REMOVE FROM HERE
-  if variables["councilnet_echo"] == 1 and name=="councilnet" then
+  if variables["godnet_echo"] == 1 and name=="godnet" then
   EnableTrigger("end_gag", true)
   end
 end -- untagged info
@@ -1165,7 +1165,7 @@ function right_click_menu (hotspot_id)
       "Wiznet|"..
       ((variables["show_newbie"]==1 and "+") or "")..
       "Newbie|"..
-      ((variables["show_councilnet"]==1 and "+") or "")..
+      ((variables["show_godnet"]==1 and "+") or "")..
       "CouncilNet|"..
       "<"
       
@@ -1186,7 +1186,7 @@ function right_click_menu (hotspot_id)
                               ((variables["ooc_echo"]==0 and "+") or "").. "OOC|"..
 							  ((variables["wiznet_echo"]==0 and "+") or "").. "Wiznet|"..
                               ((variables["newbie_echo"]==0 and "+") or "").. "Newbie|"..
-                              ((variables["councilnet_echo"]==0 and "+") or "").. "CouncilNet|"..
+                              ((variables["godnet_echo"]==0 and "+") or "").. "CouncilNet|"..
                               "<|-"
                               
   
@@ -1302,12 +1302,12 @@ function right_click_menu (hotspot_id)
 	        else
 	          ColourNote("yellow","","Say capturing is now DISABLED.")
 	        end
-	        EnableTrigger("oocchannel", 0 == variables["show_say"])
+	        EnableTrigger("say1", 0 == variables["show_say"])
 	        EnableTrigger("say2", 0 == variables["show_say"])
 	        EnableTrigger("ask1", 0 == variables["show_say"])
-	        EnableTrigger("ask2", 0 == variables["show_say"])
+	        EnableTrigger("shout", 0 == variables["show_say"])
 	        EnableTrigger("exclaim1", 0 == variables["show_say"])
-	        variables["show_say"] = GetTriggerOption("oocchannel", "enabled")
+	        variables["show_say"] = GetTriggerOption("say1", "enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1384,13 +1384,13 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-      	if variables["show_councilnet"] == 0 then
+      	if variables["show_godnet"] == 0 then
       		ColourNote ("yellow", "", "CouncilNet capturing is now ENABLED.")
       	else
       		ColourNote ("yellow", "", "CouncilNet capturing is now DISABLED.")
       	end
-      	EnableTrigger("councilnet", 0 == variables["show_councilnet"])
-      	variables["show_councilnet"] = GetTriggerOption("councilnet","enabled")
+      	EnableTrigger("godnet", 0 == variables["show_godnet"])
+      	variables["show_godnet"] = GetTriggerOption("godnet","enabled")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1419,12 +1419,12 @@ function right_click_menu (hotspot_id)
         else
           ColourNote("yellow", "", "Say will be shown in the main window.")
         end
-        SetTriggerOption("oocchannel", "omit_from_output", 0 == variables["say_echo"])
+        SetTriggerOption("say1", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("say2", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("ask1", "omit_from_output", 0 == variables["say_echo"])
-        SetTriggerOption("ask2", "omit_from_output", 0 == variables["say_echo"])
+        SetTriggerOption("shout", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("exclaim1", "omit_from_output", 0 == variables["say_echo"])
-        variables["say_echo"] = GetTriggerOption("oocchannel", "omit_from_output")
+        variables["say_echo"] = GetTriggerOption("say1", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
@@ -1501,13 +1501,13 @@ function right_click_menu (hotspot_id)
 	  end
 	  check_counter = check_counter + 1
       if numResult == check_counter+hyperlink_skip then
-        if variables["councilnet_echo"] == 0 then
+        if variables["godnet_echo"] == 0 then
           ColourNote("yellow", "", "CouncilNet will NOT be shown in the main window.")
         else
           ColourNote("yellow", "", "CouncilNet will be shown in the main window.")
         end
-        SetTriggerOption("councilnet", "omit_from_output", 0 == variables["councilnet_echo"])
-        variables["councilnet_echo"] = GetTriggerOption("councilnet", "omit_from_output")
+        SetTriggerOption("godnet", "omit_from_output", 0 == variables["godnet_echo"])
+        variables["godnet_echo"] = GetTriggerOption("godnet", "omit_from_output")
       end     
       check_counter = check_counter + 1
       --if echo_skip ~= 0 then
