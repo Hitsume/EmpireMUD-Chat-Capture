@@ -7,7 +7,6 @@
 <!-- The order of the menu items near the start of right_click_menu, where the menu is built, -->
 <!-- must match the order further down, where the user selection is checked. This is something I'd like to clean up. -Hitsume -->
 
-<!-- KNOWN BUG: doesn't understand extended colors, giving &x### codes. -->
 <muclient>
 <plugin
    name="Chat_Capture"
@@ -17,7 +16,7 @@
    purpose="Move chats to a miniwindow"
    date_written="2010-10-25"
    requires="4.94"
-   version="0.9"
+   version="1.0"
    save_state="y"
 >
 
@@ -44,9 +43,9 @@ USAGE:
   <trigger enabled="n" name="buzz" match="* pokes you in the ribs." regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="ask1" match="* ask* *, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
   <trigger enabled="n" name="shout" match="* shout*, '*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="empire" match="^\[EMPIRE (.*?)\]\:(.*?)$|^\[EMPIRE\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="100" />
-  <trigger enabled="n" name="slashchannels" match="^\[\/.+ (.*?)\]\:(.*?)$|^\[\/.+\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="101" />
+  <!-- <trigger enabled="n" name="exclaim1" match="*say*'*'" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> -->
+  <trigger enabled="n" name="empire" match="\[EMPIRE (.*?)\]\:(.*?)$|\[EMPIRE\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="100" />
+  <trigger enabled="n" name="slashchannels" match="\[\/.+? (.*?)\]\:(.*?)$|\[\/.+?\] [[:alpha:]]+.*$" regexp="y" omit_from_output="n" script="untagged_info" sequence="101" />
   <trigger enabled="n" name="deathlog" match="[ DEATH:*" regexp="n" omit_from_output="n" script="untagged_info" sequence="100" /> 
   
   --- begin OOC chat grabs
@@ -131,8 +130,48 @@ line_height = ""
 windowinfo = ""
 startx = ""
 starty = ""
-function setup()
 
+--Deals with extended colors
+function adjustColors_EmpireMUD(input)
+color_table = {}
+--color_table["lotj color"] = "empiremud color"
+color_table["&w"] = "&0"
+color_table["&x102"] = "&w"
+color_table["&x124"] = "&r"
+color_table["&x125"] = "&p"
+color_table["&x127"] = "&m"
+color_table["&x056"] = "&v"
+color_table["&x019"] = "&b"
+color_table["&x026"] = "&a"
+color_table["&x037"] = "&c"
+color_table["&x034"] = "&g"
+color_table["&x076"] = "&l"
+color_table["&x035"] = "&j"
+color_table["&x142"] = "&y"
+color_table["&x208"] = "&o"
+color_table["&x094"] = "&t"
+--&R = &R
+color_table["&P"] = "&M"
+color_table["&x198"] = "&P"
+color_table["&x093"] = "&V"
+--&B = &B
+color_table["&x033"] = "&A"
+--&C = &C
+--&G = &G
+color_table["&x118"] = "&L"
+color_table["&x048"] = "&J"
+--&Y = &Y
+color_table["&x214"] = "&O"
+color_table["&x137"] = "&T"
+--&W = &W
+output = input
+for k,v in pairs(color_table) do
+output = string.gsub(output, k, v)
+end
+return output
+end
+
+function setup()
 -- Automating a lot of tedium
 variable_names = {"show_say", "show_empire", "show_slashchannels", "show_deathlog", "show_buzz", "show_ooc","show_wiznet", "show_newbie", "show_groupchat", "show_tellchat", "show_godnet",
 "say_echo", "empire_echo", "slashchannels_echo", "ooc_echo", "wiznet_echo", "newbie_echo", "groupchat_echo", "tellchat_echo", "godnet_echo"}
@@ -165,12 +204,11 @@ godnet_echo = tonumber(GetVariable("godnet_echo")) or 1]]
 end
 setup() --:S
 
-
 SetTriggerOption("say1", "enabled", variables["show_say"])
 SetTriggerOption("say2", "enabled", variables["show_say"])
 SetTriggerOption("ask1", "enabled", variables["show_say"])
 SetTriggerOption("shout", "enabled", variables["show_say"])
-SetTriggerOption("exclaim1", "enabled", variables["show_say"])
+--SetTriggerOption("exclaim1", "enabled", variables["show_say"])
 SetTriggerOption("empire", "enabled", variables["show_empire"])
 SetTriggerOption("slashchannels", "enabled", variables["show_slashchannels"])
 SetTriggerOption("deathlog", "enabled", variables["show_deathlog"])
@@ -187,7 +225,7 @@ SetTriggerOption("say1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("say2", "omit_from_output", variables["say_echo"])
 SetTriggerOption("ask1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("shout", "omit_from_output", variables["say_echo"])
-SetTriggerOption("exclaim1", "omit_from_output", variables["say_echo"])
+--SetTriggerOption("exclaim1", "omit_from_output", variables["say_echo"])
 SetTriggerOption("empire", "omit_from_output", variables["empire_echo"])
 SetTriggerOption("slashchannels", "omit_from_output", variables["slashchannels_echo"])
 SetTriggerOption("ooc", "omit_from_output", variables["ooc_echo"])
@@ -831,7 +869,7 @@ end
 
 function untagged_info (name, line, wildcards, styles)
   stampAndStore(styles)
-  if variables["say_echo"] == 1 and (name == "say1" or name == "say2" or name=="ask1" or name=="shout" or name=="exclaim1") then
+  if variables["say_echo"] == 1 and (name == "say1" or name == "say2" or name=="ask1" or name=="shout") then
   EnableTrigger("end_gag", true)
   end
   if variables["empire_echo"] == 1 and name=="empire" then
@@ -919,7 +957,9 @@ function GetAllBufferedMessages()
    for _,styles in ipairs(rawlines) do
       table.insert(t, StylesToColoursOneLine(styles[1]))
    end
-   SetClipboard(table.concat(t,"\n"))
+   local clipboard = table.concat(t,"\n")
+   clipboard = adjustColors_EmpireMUD(clipboard)
+   SetClipboard(clipboard)
 end
 
 function MouseOver(flags, hotspot_id)
@@ -1216,7 +1256,7 @@ function right_click_menu (hotspot_id)
    if result ~= "" then
       numResult = tonumber(result)
 	  local check_counter = 0 -- Tracks the number of results we've checked for.
-      if numResult == hyperlink_skip-1 then
+      if numResult == hyperlink_skip-1 then --Open URL
          local res = OpenBrowser(url)
          if res ~= 0 then
             SetClipboard(url)
@@ -1225,12 +1265,12 @@ function right_click_menu (hotspot_id)
             ColourNote("yellow","",url)
             ColourNote("cyan","","^---------------------------------------------------------^")         
          end
-      elseif numResult == hyperlink_skip then
+      elseif numResult == hyperlink_skip then --Copy URL
          SetClipboard(url)
          ColourNote("cyan","","v-------------------Copied to clipboard-------------------v")
          ColourNote("yellow","",url)
          ColourNote("cyan","","^---------------------------------------------------------^")         
-      elseif numResult == 1+hyperlink_skip then
+      elseif numResult == 1+hyperlink_skip then --Copy selected without colors
          if #copied_text > 0 then
             local declored_text = strip_colours(copied_text)
             SetClipboard(declored_text)
@@ -1238,11 +1278,12 @@ function right_click_menu (hotspot_id)
             ColourNote("yellow","",declored_text)
             ColourNote("cyan","","^---------------------------------------------------------^")
          end
-      elseif numResult == 2+hyperlink_skip then
+      elseif numResult == 2+hyperlink_skip then --Copy selected
          if #copied_text > 0 then
-            SetClipboard(copied_text)
+		    adjusted_text = adjustColors_EmpireMUD(copied_text) -- this is a bit of a hack
+            SetClipboard(adjusted_text)
             ColourNote("cyan","","v-------------------Copied to clipboard-------------------v")
-            ColourNote("yellow","",copied_text)
+            ColourNote("yellow","",adjusted_text)
             ColourNote("cyan","","^---------------------------------------------------------^")  
          end
       elseif numResult == 3+hyperlink_skip then
@@ -1306,7 +1347,7 @@ function right_click_menu (hotspot_id)
 	        EnableTrigger("say2", 0 == variables["show_say"])
 	        EnableTrigger("ask1", 0 == variables["show_say"])
 	        EnableTrigger("shout", 0 == variables["show_say"])
-	        EnableTrigger("exclaim1", 0 == variables["show_say"])
+--	        EnableTrigger("exclaim1", 0 == variables["show_say"])
 	        variables["show_say"] = GetTriggerOption("say1", "enabled")
 	  end
 	  check_counter = check_counter + 1
@@ -1421,7 +1462,7 @@ function right_click_menu (hotspot_id)
         SetTriggerOption("say2", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("ask1", "omit_from_output", 0 == variables["say_echo"])
         SetTriggerOption("shout", "omit_from_output", 0 == variables["say_echo"])
-        SetTriggerOption("exclaim1", "omit_from_output", 0 == variables["say_echo"])
+--        SetTriggerOption("exclaim1", "omit_from_output", 0 == variables["say_echo"])
         variables["say_echo"] = GetTriggerOption("say1", "omit_from_output")
 	  end
 	  check_counter = check_counter + 1
